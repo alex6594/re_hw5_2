@@ -1,53 +1,105 @@
-import "App.css";
-import { useEffect, useRef, useState } from "react";
+import './App.css';
+
+import News from './components/header/News/News';
+import newsCategories from './data/newsСategories';
+import newsNames from './data/newsNames';
+import ExchangeRates from './components/header/ExchangeRates/ExchangeRates';
+import currencyRates from './data/currencyRates';
+import Ads from './components/header/Ads/Ads';
+
+import Search from './components/body/Search';
+import searchСategories from './data/searchСategories';
+import Image from './components/header/common/Image/Image';
+
+import Widgets from './components/footer/Widgets';
+
+import WeatherWidget from './components/footer/Widgets/WeatherWidget/WeatherWidget';
+import FavoritesWidget from './components/footer/Widgets/FavoritesWidget/FavoritesWidget';
+import favoritePages from './data/favoritePages';
+import GermanMapWidget from './components/footer/Widgets/GermanMapWidget/GermanMapWidget';
+import germanMapItems from './data/germanMapItems';
+import TVProgramWidget from './components/footer/Widgets/TVProgramWidget/TVProgramWidget';
+import TVPrograms from './data/TVPrograms';
+import EtherWidget from './components/footer/Widgets/EtherWidget/EtherWidget';
+import ether from './data/ether';
 
 function App() {
-  const url =
-    "https://api.unsplash.com/photos/?client_id=jvBktePoEXo1HhmaW546-MTuJpHSYCcVD9yzYe0VwVk";
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    const response = async () => {
-      try {
-        const res = await fetch(url);
-        const dataJson = await res.json();
-        console.log(dataJson);
-        setData(() => dataJson.slice(0, 10));
-      } catch (e) {
-        console.warn(e);
-      }
-    };
-    response();
-  }, []);
-  const upperCaseLetter = (words) => {
-    const w = words?.[0].toUpperCase() + words?.slice(1);
-    return w;
-  };
   return (
-    <div className={"App"}>
-      {data?.map(({ title, urls, alt_description, description }) => (
-        <div className="card" key={title} style={{ width: "28em" }}>
-          <div className="card-body">
-            <h5 className="card-title">
-              {upperCaseLetter(alt_description) || "Title"}
-            </h5>
-            <p className="card-text">
-              {upperCaseLetter(description) ||
-                "This is a wider card with supporting text below as a natural\n" +
-                  "              lead-in to additional content. This content is a little bit\n" +
-                  "              longer."}
-            </p>
-            <p className="card-text">
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </p>
+    <>
+      <header className="App-header">
+        <div className="App-wrapper">
+          <div className="App-header__main">
+            <News newsCategories={newsCategories} newsNames={newsNames} />
+
+            <ExchangeRates currencyRates={currencyRates} />
           </div>
-          <img
-            src={urls.small}
-            className="card-img-top"
-            alt={alt_description}
-          />
+
+          <Ads
+            title="Работа над ошибками"
+            description="Смотрите на Яндексе и запоминайте"
+          >
+            <Image
+              containerClass="Ads__image-container"
+              imgClass="Ads-image"
+              src="https://picsum.photos/id/2/100"
+              alt="Plug"
+            />
+          </Ads>
         </div>
-      ))}
-    </div>
+      </header>
+
+      <div className="App-body">
+        <div className="App-wrapper">
+
+          <Search
+            searchСategories={searchСategories}
+            searchBarLabel="Яндекс"
+            searchBtnName="Найти"
+            searchAdvice="Найдётся всё. Например,"
+            searchExample="фаза луны сегодня"
+          />
+
+          <Image
+            containerClass="Banner"
+            imgClass="Banner-image"
+            src="https://picsum.photos/id/1063/1000"
+            alt="Plug"
+          />
+
+        </div>
+      </div>
+
+      <footer className="App-footer">
+        <div className="App-wrapper">
+
+          <Widgets>
+            <WeatherWidget
+              title="Погода"
+              averageTemperature="+17"
+              morningTemperature="+17"
+              daytimeTemperature="+20"
+            />
+            <GermanMapWidget
+              title="Карта Германии"
+              items={germanMapItems}
+            />
+            <EtherWidget
+              title="Эфир"
+              items={ether}
+            />
+            <FavoritesWidget
+              title="Посещаемое"
+              items={favoritePages}
+            />
+            <TVProgramWidget
+              title="Телепрограмма"
+              items={TVPrograms}
+            />
+          </Widgets>
+
+        </div>
+      </footer>
+    </>
   );
 }
 
